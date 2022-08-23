@@ -24,14 +24,22 @@ describe("Statement", () => {
       },
     ],
   };
-  let expected1 = "Hamlet: $410.00 (55 seats)"
-  let expected2 = "Othello: $410.00 (40 seats)"
+
+  const fakePlaysWithUndefinedType = {
+    hamlet: { name: "Hamlet", type: undefined },
+  };
+
+  let expected1 = "Hamlet: $650.00 (55 seats)"
+  let expected2 = "Othello: $500.00 (40 seats)"
+
+  let testStatement = jest.fn(code.statement);
 
   it("should return length greater than 50", () => {
-    expect(code.statement(fakeInvoice, fakePlays).length).toBeGreaterThan(50);
+    expect(testStatement(fakeInvoice, fakePlays).length).toBeGreaterThan(50);
   });
+
   it("should contain expected values", () => {
-    expect(code.statement(fakeInvoice, fakePlays)).toContain(expected1);
-    expect(code.statement(fakeInvoice, fakePlays)).toContain(expected2);
+    expect(testStatement(fakeInvoice, fakePlays)).toContain(expected1);
+    expect(testStatement(fakeInvoice, fakePlays)).toContain(expected2);
   });
 });
