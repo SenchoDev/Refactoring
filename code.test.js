@@ -1,4 +1,4 @@
-const code = require("./code.js");
+const { statement, htmlStatement } = require("./code.js");
 
 describe("Statement", () => {
   const fakePlays = {
@@ -25,21 +25,46 @@ describe("Statement", () => {
     ],
   };
 
-  const fakePlaysWithUndefinedType = {
-    hamlet: { name: "Hamlet", type: undefined },
-  };
+  describe("Plain string statement", () => {
+    let expectedHamletData= "Hamlet: $650.00 (55 seats)";
+    let expectedOthelloData = "Othello: $500.00 (40 seats)";
 
-  let expected1 = "Hamlet: $650.00 (55 seats)"
-  let expected2 = "Othello: $500.00 (40 seats)"
+    let testStatement = jest.fn(statement);
 
-  let testStatement = jest.fn(code.statement);
+    it("should return length greater than 50", () => {
+      expect(testStatement(fakeInvoice, fakePlays).length).toBeGreaterThan(50);
+    });
 
-  it("should return length greater than 50", () => {
-    expect(testStatement(fakeInvoice, fakePlays).length).toBeGreaterThan(50);
+    it("should render expected string values", () => {
+      expect(testStatement(fakeInvoice, fakePlays)).toContain(expectedHamletData);
+      expect(testStatement(fakeInvoice, fakePlays)).toContain(expectedOthelloData);
+    });
   });
 
-  it("should contain expected values", () => {
-    expect(testStatement(fakeInvoice, fakePlays)).toContain(expected1);
-    expect(testStatement(fakeInvoice, fakePlays)).toContain(expected2);
+  describe("HTML Text statement", () => {
+    let testHtmlStatement = jest.fn(htmlStatement);
+
+    let expectedTableColumnNames =
+      "<tr><th>play</th><th>seats</th><th>cost</th></tr>";
+
+    let expectedHtmlAsYouLikeItData = '<tr><td>As You Like It</td><td>35</td><td>$580.00</td></tr>'
+    let expectedHtmlOthelloData = '<tr><td>Othello</td><td>40</td><td>$500.00</td></tr>'
+
+    it("should contain table that has plays seats and costs column", () => {
+      expect(testHtmlStatement(fakeInvoice, fakePlays)).toContain(
+        expectedTableColumnNames
+      );
+    });
+
+
+    it("should render expected html values", () => {
+      expect(testHtmlStatement(fakeInvoice, fakePlays)).toContain(
+        expectedHtmlAsYouLikeItData
+      );
+      expect(testHtmlStatement(fakeInvoice, fakePlays)).toContain(
+        expectedHtmlOthelloData
+      );
+    });
+
   });
 });
