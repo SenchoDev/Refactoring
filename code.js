@@ -37,7 +37,6 @@ function statement(invoice, plays) {
     result.play = playFor(result);
     result.amount = amountFor(result);
     result.volumeCredits = volumeCreditsFor(result);
-
     return result;
   }
   function playFor(aPerformance) {
@@ -74,23 +73,15 @@ function statement(invoice, plays) {
   }
 
   function totalVolumeCredits(data) {
-    let result = 0;
-    for (let perf of data.performances) {
-      result += perf.volumeCredits;
-    }
-    return result;
+    return data.performances.reduce((total, p) => total + p.amount, 0);
   }
 
   function totalAmount(data) {
-    let result = 0;
-    for (let perf of data.performances) {
-      result += perf.amount;
-    }
-    return result;
+    return data.performances.reduce((total, p) => total + p.amount, 0);
   }
 }
 
-function renderPlainText(data, invoice, plays) {
+function renderPlainText(data) {
   let result = `Statement for ${data.customer}\n`;
 
   for (let perf of data.performances) {
