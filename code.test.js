@@ -1,4 +1,4 @@
-const { statement, htmlStatement } = require("./code.js");
+const { statement, htmlStatement } = require("./statement.js");
 
 describe("Statement", () => {
   const fakePlays = {

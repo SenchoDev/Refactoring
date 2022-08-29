@@ -1,29 +1,6 @@
 // useful github https://github.com/wickedwukong/martin-fowler-refactoring-2nd
 const createStatementData = require("./createStatementData");
-
-const plays = {
-  hamlet: { name: "Hamlet", type: "tragedy" },
-  "as-like": { name: "As You Like It", type: "comedy" },
-  othello: { name: "Othello", type: "tragedy" },
-};
-
-const invoice = {
-  customer: "BigCo",
-  performances: [
-    {
-      playID: "hamlet",
-      audience: 55,
-    },
-    {
-      playID: "as-like",
-      audience: 35,
-    },
-    {
-      playID: "othello",
-      audience: 40,
-    },
-  ],
-};
+const { invoice, plays } = require('./data')
 
 function htmlStatement(invoice, plays) {
   return renderHtml(createStatementData(invoice, plays));
@@ -40,14 +17,6 @@ function renderHtml(data) {
   result += `<p>Amount owed is <em>${usd(data.totalAmount)}</em></p>\n`;
   result += `<p>You earned <em>${data.totalVolumeCredits}</em> credits</p>\n`;
   return result;
-
-  function usd(aNumber) {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-    }).format(aNumber / 100);
-  }
 }
 
 function statement(invoice, plays) {
@@ -65,14 +34,14 @@ function renderPlainText(data) {
   result += `Amount owed is ${usd(data.totalAmount)}\n`;
   result += `You earned ${data.totalVolumeCredits} credits\n`;
   return result;
+}
 
-  function usd(aNumber) {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-    }).format(aNumber / 100);
-  }
+function usd(aNumber) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(aNumber / 100);
 }
 
 const result = statement(invoice, plays);
